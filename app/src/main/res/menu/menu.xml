@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:title="Cerrar Sesión"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_set_available"
+        android:title="Establecer como Disponible"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_set_offline"
+        android:title="Establecer como Desconectado"
+        app:showAsAction="never" />
+
+</menu>

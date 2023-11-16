@@ -1,12 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="13dp">
+
+    <TextView
+        android:id="@+id/tvLoginTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido al taller 3"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"  />
 
     <EditText
         android:id="@+id/etLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvLoginTitle"
+        android:layout_marginBottom="8dp"
         android:hint="Correo electrónico"
         android:inputType="textEmailAddress"/>
 
@@ -31,8 +43,9 @@
         android:id="@+id/btnRegistro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etLoginPassword"
-        android:layout_marginTop="97dp"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Registrarse" />
 
 </RelativeLayout>
