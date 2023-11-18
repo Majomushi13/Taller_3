@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "745475041902",
-    "project_id": "taller-3-5ed35",
-    "storage_bucket": "taller-3-5ed35.appspot.com"
+    "project_number": "1006228968864",
+    "project_id": "taller-3-6b579",
+    "storage_bucket": "taller-3-6b579.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:745475041902:android:1446dfaee943ad0706547f",
+        "mobilesdk_app_id": "1:1006228968864:android:ac14a424fa68ad431780c5",
         "android_client_info": {
           "package_name": "com.example.taller3"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAY52VLJzf44XXfDqGJbVZYJZqUaulq_dE"
+          "current_key": "AIzaSyBsp2qWzcCHstsbTvlF4E-2jPRzRUl79u4"
         }
       ],
       "services": {

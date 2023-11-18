@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -16,6 +17,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import org.json.JSONObject
 
 class MapasActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -24,7 +28,12 @@ class MapasActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_login)
+
+        val serviceIntent = Intent(this, UserStatusService::class.java)
+        startService(serviceIntent)
+
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -47,17 +56,38 @@ class MapasActivity : AppCompatActivity(), OnMapReadyCallback {
                 return true
             }
             R.id.action_set_available -> {
-                // Manejar la acción de establecer como disponible
+                setUserAvailability(true)
                 return true
             }
             R.id.action_set_offline -> {
-                // Manejar la acción de establecer como desconectado
+                setUserAvailability(false)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
+    private fun setUserAvailability(isAvailable: Boolean) {
+        val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
+
+        if (userId != null) {
+            val userRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
+            userRef.child("disponibilidad").setValue(isAvailable)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Éxito al establecer la disponibilidad
+                        val statusMessage = if (isAvailable) "Ahora estás disponible" else "Ahora estás desconectado"
+                        Toast.makeText(this, statusMessage, Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Manejar error al establecer la disponibilidad
+                        Toast.makeText(this, "Error al establecer la disponibilidad", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } else {
+            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -96,7 +126,7 @@ class MapasActivity : AppCompatActivity(), OnMapReadyCallback {
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             val locations = JSONObject(jsonString)
 
-            // Acceder a las ubicaciones y agregar marcadores en el mapa
+
             val locationsArray = locations.getJSONArray("locationsArray")
 
             for (i in 0 until locationsArray.length()) {
@@ -109,7 +139,7 @@ class MapasActivity : AppCompatActivity(), OnMapReadyCallback {
                 mMap.addMarker(MarkerOptions().position(poiLatLng).title(name))
             }
 
-            // Centrar el mapa en la última ubicación del JSON
+
             val lastLocation = locationsArray.getJSONObject(locationsArray.length() - 1)
             val lastLatitude = lastLocation.getDouble("latitude")
             val lastLongitude = lastLocation.getDouble("longitude")
